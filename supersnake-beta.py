@@ -15,7 +15,7 @@ class Snake(arcade.Sprite):
         self.color2 = arcade.color.YELLOW
         self.x = 0
         self.y = 0
-        self.score = 1
+        self.score = 0
         self.center_x = SCREEN_WIDTH // 2
         self.center_y = SCREEN_HEIGHT // 2
         self.speed = 4
@@ -126,7 +126,7 @@ class Game(arcade.Window):
         self.poo.draw()
         arcade.draw_text("Score:", 20 , SCREEN_HEIGHT - 25, arcade.color.WHITE)
         arcade.draw_text(str(self.snake.score), 100, SCREEN_HEIGHT -25, arcade.color.WHITE)
-        if self.snake.score == 0 or self.snake.center_x<0 or self.snake.center_x > SCREEN_WIDTH or self.snake.center_y < 0 or self.snake.center_y > SCREEN_HEIGHT:
+        if self.snake.score == -1 or self.snake.center_x<0 or self.snake.center_x > SCREEN_WIDTH or self.snake.center_y < 0 or self.snake.center_y > SCREEN_HEIGHT:
             arcade.draw_text("Game Over!" , SCREEN_WIDTH // 2 - 80 ,SCREEN_HEIGHT // 2, arcade.color.RED, bold=True, font_size=20)
             arcade.exit()
 
