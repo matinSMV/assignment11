@@ -1,5 +1,4 @@
 import random
-from time import sleep
 import arcade
 
 SCREEN_WIDTH = 500
@@ -9,8 +8,8 @@ class Snake(arcade.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.width = 4
-        self.height = 4
+        self.width = 16
+        self.height = 16
         self.color = arcade.color.BLUE
         self.color2 = arcade.color.YELLOW
         self.x = 0
@@ -20,30 +19,32 @@ class Snake(arcade.Sprite):
         self.center_y = SCREEN_HEIGHT // 2
         self.speed = 4
         self.body = []
-
-    def move(self):
         self.body.append([self.center_x , self.center_y])
 
-        if len(self.body) > self.score:
-            self.body.pop(0)
+    def move(self):
+        for i in range(len(self.body)-1,0,-1):
+            self.body[i][0] = self.body[i-1][0]
+            self.body[i][1] = self.body[i-1][1]
 
-        if self.x > 0:
-            self.center_x += self.speed
-        elif self.x < 0:
-            self.center_x -= self.speed
-        if self.y > 0:
-            self.center_y += self.speed
-        elif self.y < 0:
-            self.center_y -= self.speed
+        self.center_x += self.speed * self.x
+        self.center_y += self.speed * self.y
+
+        if self.body:
+            self.body[0][0] += self.speed * self.x
+            self.body[0][1] += self.speed * self.y
 
     def eat(self,wte):
         match wte:
             case 0:
                 self.score += 1
+                self.body.append([self.body[len(self.body)-1][0], self.body[len(self.body)-1][1]])
             case 1:
                 self.score += 2
+                self.body.append([self.body[len(self.body)-1][0], self.body[len(self.body)-1][1]])
+                self.body.append([self.body[len(self.body)-1][0], self.body[len(self.body)-1][1]])
             case -1:
                 self.score -= 1
+                self.body.pop()
 
 
     def draw(self):
@@ -130,7 +131,6 @@ class Game(arcade.Window):
             arcade.draw_text("Game Over!" , SCREEN_WIDTH // 2 - 80 ,SCREEN_HEIGHT // 2, arcade.color.RED, bold=True, font_size=20)
             arcade.exit()
 
-
     def on_key_press(self, symbol: int, modifiers: int):
         match symbol:
             case arcade.key.LEFT:
@@ -146,6 +146,7 @@ class Game(arcade.Window):
                 self.snake.y = -1
                 self.snake.x = 0
 
-
-my_game = Game()
-arcade.run()
+if __name__=='__main__':
+    my_game = Game()
+    arcade.run()
+    
