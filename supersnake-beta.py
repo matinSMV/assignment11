@@ -145,8 +145,6 @@ class Game(arcade.Window):
             case arcade.key.DOWN:
                 self.snake.y = -1
                 self.snake.x = 0
-
-if __name__=='__main__':
-    my_game = Game()
-    arcade.run()
+my_game = Game()
+arcade.run()
     
